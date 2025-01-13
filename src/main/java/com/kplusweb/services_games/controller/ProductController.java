@@ -11,11 +11,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/get")
-public class GetController {
+public class ProductController {
 
     private final CategoryService categoryService;
 
-    public GetController(CategoryService categoryService) {
+    public ProductController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
