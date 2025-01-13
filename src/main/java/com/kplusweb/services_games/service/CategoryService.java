@@ -28,13 +28,20 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    public String addCategory(CategoryDTO categoryDTO) {
+    public CategoryDTO postCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
+        category.setName(categoryDTO.name());
+        category.setIcon_url(categoryDTO.icon_url());
+        category.setBanner_url(categoryDTO.banner_url());
 
-        return "oi";
+        Category savedCategory = categoryRepository.save(category);
+
+        return new CategoryDTO(
+                savedCategory.getId(),
+                savedCategory.getName(),
+                savedCategory.getIcon_url(),
+                savedCategory.getBanner_url()
+        );
     }
-
-
-
 }
 
