@@ -27,5 +27,14 @@ public class CategoryService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    public String addCategory(CategoryDTO categoryDTO) {
+        Category category = new Category();
+
+        return "oi";
+    }
+
+
+
 }
 
