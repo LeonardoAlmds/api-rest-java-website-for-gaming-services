@@ -36,7 +36,26 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public String addProduct(ProductDTO productDTO) {
+    public ProductDTO getProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("product not found" + id));
+
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getImage_url(),
+                product.getPrice(),
+                product.getStock_quantity(),
+                product.getSold_quantity(),
+                product.getPosted_date(),
+                product.getStatus().toString(),
+                product.getRating(),
+                product.getCategory()
+        );
+    }
+
+    public String postProduct(ProductDTO productDTO) {
         Product product = new Product();
         product.setName(productDTO.name());
         product.setDescription(productDTO.description());
