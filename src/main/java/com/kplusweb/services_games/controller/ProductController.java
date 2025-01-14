@@ -35,4 +35,10 @@ public class ProductController {
         String savedProduct = productService.postProduct(product);
         return ResponseEntity.ok(savedProduct);
     }
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        productService.updateProduct(id, productDTO);
+        return ResponseEntity.ok("Product updated successfully");
+    }
 }

@@ -2,6 +2,7 @@ package com.kplusweb.services_games.service;
 
 import com.kplusweb.services_games.dtos.ProductDTO;
 import com.kplusweb.services_games.entity.Product;
+import com.kplusweb.services_games.repositories.CategoryRepository;
 import com.kplusweb.services_games.repositories.ProductRepository;
 
 import java.util.List;
@@ -68,8 +69,27 @@ public class ProductService {
         product.setRating(productDTO.rating());
         product.setCategory(productDTO.category_id());
 
-        productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
         return "Product added successfully";
     }
-    
+
+    public String updateProduct(Long id, ProductDTO productDTO) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("product not found: " + id));
+
+
+        product.setName(productDTO.name());
+        product.setDescription(productDTO.description());
+        product.setImage_url(productDTO.image_url());
+        product.setPrice(productDTO.price());
+        product.setStock_quantity(productDTO.stock_quantity());
+        product.setSold_quantity(productDTO.sold_quantity());
+        product.setPosted_date(productDTO.posted_date());
+        product.setStatus(Product.Status.valueOf(productDTO.status()));
+        product.setRating(productDTO.rating());
+        product.setCategory(productDTO.category_id());
+
+        productRepository.save(product);
+        return "Product updated successfully";
+    }
 }
