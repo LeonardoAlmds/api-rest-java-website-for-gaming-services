@@ -13,6 +13,9 @@ public class Category {
     private String name;
 
     @Column(nullable = false)
+    private String acronym;
+
+    @Column(nullable = false)
     private String icon_url;
 
     @Column(nullable = false)
@@ -21,9 +24,10 @@ public class Category {
     // Construtores
     public Category() {}
 
-    public Category(Long id, String name, String icon_url, String banner_url) {
+    public Category(Long id, String name, String acronym, String icon_url, String banner_url) {
         this.id = id;
         this.name = name;
+        this.acronym = acronym;
         this.icon_url = icon_url;
         this.banner_url = banner_url;
     }
@@ -43,6 +47,14 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAcronym() {
+        return acronym;
+    }
+
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
     }
 
     public String getIcon_url() {

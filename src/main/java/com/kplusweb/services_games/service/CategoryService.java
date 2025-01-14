@@ -22,6 +22,7 @@ public class CategoryService {
                 .map(category -> new CategoryDTO(
                         category.getId(),
                         category.getName(),
+                        category.getAcronym(),
                         category.getIcon_url(),
                         category.getBanner_url()
                 ))
@@ -31,6 +32,7 @@ public class CategoryService {
     public CategoryDTO postCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         category.setName(categoryDTO.name());
+        category.setAcronym(categoryDTO.acronym());
         category.setIcon_url(categoryDTO.icon_url());
         category.setBanner_url(categoryDTO.banner_url());
 
@@ -39,6 +41,7 @@ public class CategoryService {
         return new CategoryDTO(
                 savedCategory.getId(),
                 savedCategory.getName(),
+                savedCategory.getAcronym(),
                 savedCategory.getIcon_url(),
                 savedCategory.getBanner_url()
         );
