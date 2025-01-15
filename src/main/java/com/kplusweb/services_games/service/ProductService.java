@@ -36,7 +36,26 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public String addProduct(ProductDTO productDTO) {
+    public ProductDTO getProductById(Long id) {
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        return new ProductDTO(
+            product.getId(),
+            product.getName(),
+            product.getDescription(),
+            product.getImage_url(),
+            product.getPrice(),
+            product.getStock_quantity(),
+            product.getSold_quantity(),
+            product.getPosted_date(),
+            product.getStatus().toString(),
+            product.getRating(),
+            product.getCategory()
+        );
+    }
+
+    public ProductDTO addProduct(ProductDTO productDTO) {
         Product product = new Product();
         product.setName(productDTO.name());
         product.setDescription(productDTO.description());
@@ -49,8 +68,20 @@ public class ProductService {
         product.setRating(productDTO.rating());
         product.setCategory(productDTO.category_id());
 
-        productRepository.save(product);
-        return "Product added successfully";
+        Product savedProduct = productRepository.save(product);
+
+        return new ProductDTO(
+                savedProduct.getId(),
+                savedProduct.getName(),
+                savedProduct.getDescription(),
+                savedProduct.getImage_url(),
+                savedProduct.getPrice(),
+                savedProduct.getStock_quantity(),
+                savedProduct.getSold_quantity(),
+                savedProduct.getPosted_date(),
+                savedProduct.getStatus().toString(),
+                savedProduct.getRating(),
+                savedProduct.getCategory()
+        );
     }
-    
 }
