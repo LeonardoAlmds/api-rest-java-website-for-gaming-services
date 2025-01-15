@@ -23,7 +23,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/products/").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/products/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

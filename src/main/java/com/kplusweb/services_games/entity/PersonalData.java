@@ -1,7 +1,9 @@
 package com.kplusweb.services_games.entity;
 
 import jakarta.persistence.*;
+import org.springframework.stereotype.Service;
 
+@Entity
 public class PersonalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

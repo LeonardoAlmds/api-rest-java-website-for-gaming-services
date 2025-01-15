@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -23,6 +22,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     public User() {}
 
     public User(String login, String password, Role role) {
@@ -30,7 +33,6 @@ public class User implements UserDetails {
         this.password = password;
         this.role = role;
     }
-
     public User(Long id, String login, String password, Role role) {
         this.id = id;
         this.login = login;
@@ -42,8 +44,6 @@ public class User implements UserDetails {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
     public void setId(Long id) {
         this.id = id;
     }
@@ -71,18 +71,14 @@ public class User implements UserDetails {
     public void setRole(Role role) {
         this.role = role;
     }
-
     public enum Role {
         ADMIN("admin"),
         SELLER("seller"),
         USER("user");
-
         private String role;
-
         Role (String role) {
             this.role = role;
         }
-
         public String getRole() {
             return role;
         }
@@ -104,7 +100,6 @@ public class User implements UserDetails {
         } else {
             return List.of (new SimpleGrantedAuthority("ROLE_USER"));
         }
-
     }
 
     @Override
