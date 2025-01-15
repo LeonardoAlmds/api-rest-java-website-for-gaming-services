@@ -23,10 +23,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     public User() {}
 
     public User(String login, String password, Role role) {
@@ -46,6 +42,8 @@ public class User implements UserDetails {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
     public void setId(Long id) {
         this.id = id;
     }
