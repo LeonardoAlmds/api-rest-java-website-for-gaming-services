@@ -29,7 +29,19 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    public CategoryDTO postCategory(CategoryDTO categoryDTO) {
+    public CategoryDTO getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found" + id));
+
+        return new CategoryDTO(
+                category.getId(),
+                category.getName(),
+                category.getAcronym(),
+                category.getIcon_url(),
+                category.getBanner_url());
+    }
+
+    public String postCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         category.setName(categoryDTO.name());
         category.setAcronym(categoryDTO.acronym());
@@ -38,13 +50,29 @@ public class CategoryService {
 
         Category savedCategory = categoryRepository.save(category);
 
-        return new CategoryDTO(
-                savedCategory.getId(),
-                savedCategory.getName(),
-                savedCategory.getAcronym(),
-                savedCategory.getIcon_url(),
-                savedCategory.getBanner_url()
-        );
+        return "Category added successfully";
+    }
+
+    public String updateCategory(Long id, CategoryDTO categoryDTO) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found" + id));
+
+        category.setName(categoryDTO.name());
+        category.setAcronym(categoryDTO.acronym());
+        category.setIcon_url(categoryDTO.icon_url());
+        category.setBanner_url(categoryDTO.banner_url());
+
+        categoryRepository.save(category);
+        return "Updated Category";
+    }
+
+    public boolean deleteCategory(Long id) {
+        if (categoryRepository.existsById(id)) {
+            categoryRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
     }
 }
 
