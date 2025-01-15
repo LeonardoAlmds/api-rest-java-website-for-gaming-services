@@ -139,12 +139,12 @@ public class Product {
         this.rating = rating;
     }
 
-    public Long getCategory() {
-        return category.getId();
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategory(Long category) {
-        this.category.setId(category);
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public enum Status {

@@ -61,7 +61,7 @@ public class ProductService {
                 product.getPosted_date(),
                 product.getStatus().toString(),
                 product.getRating(),
-                product.getCategory()
+                product.getCategory().getId() // Retornar apenas o ID da categoria
         );
     }
 
@@ -81,14 +81,10 @@ public class ProductService {
         product.setPosted_date(productDTO.posted_date());
         product.setStatus(Product.Status.valueOf(productDTO.status()));
         product.setRating(productDTO.rating());
-        product.setCategory(productDTO.category_id());
 
-        Product savedProduct = productRepository.save(product);
-
+        // Buscar a categoria pelo ID e associá-la ao produto
         Category category = categoryRepository.findById(productDTO.category_id())
-                .orElseThrow(() -> new RuntimeException("Category not found" + productDTO.category_id()));
-        savedProduct.setCategory(category.getId());
-
-        productRepository.save(savedProduct);
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + productDTO.category_id()));
+        product.setCategory(category);
     }
 }
