@@ -48,7 +48,7 @@ public class CategoryService {
         category.setIcon_url(categoryDTO.icon_url());
         category.setBanner_url(categoryDTO.banner_url());
 
-        Category savedCategory = categoryRepository.save(category);
+        categoryRepository.save(category);        
 
         return "Category added successfully";
     }

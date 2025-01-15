@@ -84,5 +84,11 @@ public class ProductService {
         product.setCategory(productDTO.category_id());
 
         Product savedProduct = productRepository.save(product);
+
+        Category category = categoryRepository.findById(productDTO.category_id())
+                .orElseThrow(() -> new RuntimeException("Category not found" + productDTO.category_id()));
+        savedProduct.setCategory(category.getId());
+
+        productRepository.save(savedProduct);
     }
 }
