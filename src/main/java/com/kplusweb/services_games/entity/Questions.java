@@ -20,19 +20,16 @@ public class Questions {
     @Column(name = "created_at")
     private Date created_at;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    // Add user when all entities are created
 
     public Questions() {
     }
 
-    public Questions(Long id, String question, String answer, Date created_at, User user) {
+    public Questions(Long id, String question, String answer, Date created_at) {
         this.id = id;
         this.question = question;
         this.answer = answer;
         this.created_at = created_at;
-        this.user = user;
     }
 
     public Long getId() {
@@ -65,13 +62,5 @@ public class Questions {
 
     public void setCreated_at(Date created_at) {
         this.created_at = created_at;
-    }
-
-    public Long getUser() {
-        return user.getId();
-    }
-
-    public void setUser(Long user) {
-        this.user.setId(user);
     }
 }
