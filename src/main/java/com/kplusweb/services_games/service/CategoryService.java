@@ -1,7 +1,9 @@
 package com.kplusweb.services_games.service;
 
 import com.kplusweb.services_games.dtos.CategoryDTO;
+import com.kplusweb.services_games.dtos.ProductDTO;
 import com.kplusweb.services_games.entity.Category;
+import com.kplusweb.services_games.entity.Product;
 import com.kplusweb.services_games.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
+
     private final CategoryRepository categoryRepository;
 
     public CategoryService(CategoryRepository categoryRepository) {
@@ -24,21 +27,24 @@ public class CategoryService {
                         category.getName(),
                         category.getAcronym(),
                         category.getIcon_url(),
-                        category.getBanner_url()
+                        category.getBanner_url(),
+                        mapProductsToDTOs(category.getProducts())
                 ))
                 .collect(Collectors.toList());
     }
 
     public CategoryDTO getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found" + id));
+                .orElseThrow(() -> new RuntimeException("Category not found: " + id));
 
         return new CategoryDTO(
                 category.getId(),
                 category.getName(),
                 category.getAcronym(),
                 category.getIcon_url(),
-                category.getBanner_url());
+                category.getBanner_url(),
+                mapProductsToDTOs(category.getProducts())
+        );
     }
 
     public String postCategory(CategoryDTO categoryDTO) {
@@ -48,14 +54,13 @@ public class CategoryService {
         category.setIcon_url(categoryDTO.icon_url());
         category.setBanner_url(categoryDTO.banner_url());
 
-        categoryRepository.save(category);        
-
+        categoryRepository.save(category);
         return "Category added successfully";
     }
 
     public String updateCategory(Long id, CategoryDTO categoryDTO) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found" + id));
+                .orElseThrow(() -> new RuntimeException("Category not found: " + id));
 
         category.setName(categoryDTO.name());
         category.setAcronym(categoryDTO.acronym());
@@ -63,7 +68,7 @@ public class CategoryService {
         category.setBanner_url(categoryDTO.banner_url());
 
         categoryRepository.save(category);
-        return "Updated Category";
+        return "Category updated successfully";
     }
 
     public boolean deleteCategory(Long id) {
@@ -71,8 +76,24 @@ public class CategoryService {
             categoryRepository.deleteById(id);
             return true;
         }
-
         return false;
     }
-}
 
+    private List<ProductDTO> mapProductsToDTOs(List<Product> products) {
+        return products.stream()
+                .map(product -> new ProductDTO(
+                        product.getId(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getImage_url(),
+                        product.getPrice(),
+                        product.getStock_quantity(),
+                        product.getSold_quantity(),
+                        product.getPosted_date(),
+                        product.getStatus().toString(),
+                        product.getRating(),
+                        product.getCategory()
+                ))
+                .collect(Collectors.toList());
+    }
+}

@@ -2,6 +2,8 @@ package com.kplusweb.services_games.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -9,10 +11,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String acronym;
 
     @Column(nullable = false)
@@ -21,15 +23,19 @@ public class Category {
     @Column(nullable = false)
     private String banner_url;
 
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
+
     // Construtores
     public Category() {}
 
-    public Category(Long id, String name, String acronym, String icon_url, String banner_url) {
+    public Category(Long id, String name, String acronym, String icon_url, String banner_url, List<Product> products) {
         this.id = id;
         this.name = name;
         this.acronym = acronym;
         this.icon_url = icon_url;
         this.banner_url = banner_url;
+        this.products = products;
     }
 
     // Getters e Setters
@@ -71,5 +77,13 @@ public class Category {
 
     public void setBanner_url(String banner_url) {
         this.banner_url = banner_url;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
