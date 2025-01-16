@@ -6,12 +6,13 @@ import com.kplusweb.services_games.dtos.RegisterDTO;
 import com.kplusweb.services_games.entity.User;
 import com.kplusweb.services_games.repositories.UserRepository;
 import com.kplusweb.services_games.security.TokenService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO authenticationDTO) {
+    public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDTO authenticationDTO) {
         var usernamePasswordToken = new UsernamePasswordAuthenticationToken(
                 authenticationDTO.login(),
                 authenticationDTO.password()
@@ -46,14 +47,33 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO RegisterDTO) {
-        if(this.userRepository.findByLogin(RegisterDTO.login()) != null) return ResponseEntity.badRequest().build();
-
-        String encryptedPassword = new BCryptPasswordEncoder().encode(RegisterDTO.password());
-        User newUser = new User(RegisterDTO.login(), encryptedPassword, RegisterDTO.role());
-
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO registerDTO) {
+        if (this.userRepository.findByLogin(registerDTO.login()) != null) {
+            return ResponseEntity.badRequest().body("Login already exists");
+        }
+    
+        String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
+    
+        User newUser = new User(registerDTO.login(), encryptedPassword, User.Role.USER);
+    
         this.userRepository.save(newUser);
-
-        return ResponseEntity.ok().build();
+    
+        return ResponseEntity.ok("User registered successfully");
     }
+    
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<?> updateRoleToSeller(@PathVariable Long id) {
+        User user = this.userRepository.findById(id).orElse(null);
+    
+        if (user == null) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+    
+        user.setRole(User.Role.SELLER);
+    
+        this.userRepository.save(user);
+    
+        return ResponseEntity.ok("User role updated successfully");
+    }
+    
 }

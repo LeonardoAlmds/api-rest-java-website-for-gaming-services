@@ -69,8 +69,12 @@ public class User implements UserDetails {
     }
 
     public void setRole(Role role) {
+        if (this.role == Role.ADMIN && role != Role.ADMIN) {
+            throw new SecurityException("Cannot downgrade an ADMIN role.");
+        }
         this.role = role;
     }
+        
     public enum Role {
         ADMIN("admin"),
         SELLER("seller"),
