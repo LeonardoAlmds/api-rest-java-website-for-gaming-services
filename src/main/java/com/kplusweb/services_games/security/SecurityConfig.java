@@ -11,27 +11,35 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private final SecurityFilter securityFilter;
+
+    public SecurityConfig(final SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
+    }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, SecurityFilter securityFilter) throws Exception {
+         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/categories/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/products/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/categories/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/categories/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/products/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/categories/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/products/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/categories/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/products/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                .build();
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+                return httpSecurity.build();
     }
 
     @Bean
