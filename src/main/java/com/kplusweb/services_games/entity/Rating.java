@@ -23,7 +23,9 @@ public class Rating {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    // Add user relationship when the User entity is created
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -34,10 +36,11 @@ public class Rating {
 
     public Rating() {}
 
-    public Rating(int score, String comment, Product product) {
+    public Rating(int score, String comment, Product product, User user) {
         this.score = score;
         this.comment = comment;
         this.product = product;
+        this.user = user;
     }
 
     public Long getId() {
@@ -86,5 +89,13 @@ public class Rating {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

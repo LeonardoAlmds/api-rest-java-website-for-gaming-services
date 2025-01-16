@@ -7,8 +7,6 @@ import com.kplusweb.services_games.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,13 +34,13 @@ public class AuthenticationController {
                 authenticationDTO.password()
         );
 
-        var auth = authenticationManager.authenticate(usernamePasswordToken);
+        authenticationManager.authenticate(usernamePasswordToken);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO RegisterDTO) {
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterDTO RegisterDTO) {
         if(this.userRepository.findByLogin(RegisterDTO.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(RegisterDTO.password());

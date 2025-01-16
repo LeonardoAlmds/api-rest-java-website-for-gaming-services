@@ -20,7 +20,9 @@ public class Questions {
     @Column(name = "created_at")
     private Date created_at;
 
-    // Add user when all entities are created
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Questions() {
     }
