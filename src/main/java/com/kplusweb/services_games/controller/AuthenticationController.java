@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kplusweb.services_games.dtos.AuthenticationDTO;
 import com.kplusweb.services_games.dtos.LoginResponseDTO;
+import com.kplusweb.services_games.dtos.PersonalDataDTO;
 import com.kplusweb.services_games.dtos.RegisterDTO;
 import com.kplusweb.services_games.entity.User;
 import com.kplusweb.services_games.repositories.UserRepository;
@@ -53,7 +54,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register/user")
     public ResponseEntity<?> registerUser(@RequestBody @Valid RegisterDTO registerDTO) {
         if (this.userRepository.findByLogin(registerDTO.login()) != null) {
             return ResponseEntity.badRequest().body("Login already exists");
@@ -66,6 +67,11 @@ public class AuthenticationController {
         this.userRepository.save(newUser);
     
         return ResponseEntity.ok("User registered successfully");
+    }
+
+    @PostMapping("/register/personal_data")
+    public ResponseEntity<String> registerPersonalData(@RequestBody @Valid PersonalDataDTO personalDataDTO) {
+        return ResponseEntity.ok(this.userService.registerPersonalData(personalDataDTO));
     }
     
     @PatchMapping("/update/{id}")
