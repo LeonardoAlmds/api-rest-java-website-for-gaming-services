@@ -1,6 +1,7 @@
 package com.kplusweb.services_games.controller;
 
 import com.kplusweb.services_games.dtos.PhoneDTO;
+import com.kplusweb.services_games.exceptions.ResourceNotFoundException;
 import com.kplusweb.services_games.service.PhoneService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,41 +19,74 @@ public class PhoneController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<PhoneDTO>> getAll() {
-        List<PhoneDTO> phone = phoneService.getAllPhones();
-        return ResponseEntity.ok(phone);
+    public ResponseEntity<?> getAll() {
+        try {
+            List<PhoneDTO> phones = phoneService.getAllPhones();
+            return ResponseEntity.ok(phones);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
+        }
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<PhoneDTO> getById(@PathVariable Long id) {
-        PhoneDTO phone = phoneService.getPhoneById(id);
-        return ResponseEntity.ok(phone);
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            PhoneDTO phone = phoneService.getPhoneById(id);
+            return ResponseEntity.ok(phone);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
+        }
     }
 
     @GetMapping("/personal/{idPersonalData}")
-    public ResponseEntity<List<PhoneDTO>> getPhonesByIdPersonalData(@PathVariable Long idPersonalData) {
-        List<PhoneDTO> phones = phoneService.getPhonesByIdPersonalData(idPersonalData);
-        return ResponseEntity.ok(phones);
+    public ResponseEntity<?> getPhonesByIdPersonalData(@PathVariable Long idPersonalData) {
+        try {
+            List<PhoneDTO> phones = phoneService.getPhonesByIdPersonalData(idPersonalData);
+            return ResponseEntity.ok(phones);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
+        }
     }
 
     @PostMapping("/post")
-    public ResponseEntity<String> postPhone(@RequestBody PhoneDTO phoneDTO) {
-        String savedPhone = phoneService.postPhone(phoneDTO);
-        return ResponseEntity.ok(savedPhone);
+    public ResponseEntity<?> postPhone(@RequestBody PhoneDTO phoneDTO) {
+        try {
+            String savedPhone = phoneService.postPhone(phoneDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedPhone);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
+        }
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<String> updatePhone(@PathVariable Long id, @RequestBody PhoneDTO phoneDTO) {
-        String phoneSave = phoneService.updatePhone(id, phoneDTO);
-        return ResponseEntity.ok(phoneSave);
+    public ResponseEntity<?> updatePhone(@PathVariable Long id, @RequestBody PhoneDTO phoneDTO) {
+        try {
+            String updatedPhone = phoneService.updatePhone(id, phoneDTO);
+            return ResponseEntity.ok(updatedPhone);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deletePhone(@PathVariable Long id) {
-        String response = phoneService.deletePhone(id);
-        if ("Phone deleted successfully".equals(response)) {
+    public ResponseEntity<?> deletePhone(@PathVariable Long id) {
+        try {
+            String response = phoneService.deletePhone(id);
             return ResponseEntity.ok(response);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }
