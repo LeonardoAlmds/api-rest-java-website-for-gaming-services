@@ -78,4 +78,24 @@ public class PhoneService {
         phoneRepository.save(phone);
         return "Phone registered successfully";
     }
+
+    public String updatePhone(Long id, PhoneDTO phoneDTO) {
+        Phone phone = phoneRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No phone found with id: " + id));
+
+        phone.setDDI(phoneDTO.DDI());
+        phone.setDDD(phoneDTO.DDD());
+        phone.setPhone(phoneDTO.phone());
+        phoneRepository.save(phone);
+        return "Phone updated successfully";
+    }
+
+    public String deletePhone(Long id) {
+        Optional<Phone> phone = phoneRepository.findById(id);
+        if (phone.isPresent()) {
+            phoneRepository.delete(phone.get());
+            return "Phone deleted successfully";
+        }
+        return "Phone not found";
+    }
 }
