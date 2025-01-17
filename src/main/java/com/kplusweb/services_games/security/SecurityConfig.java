@@ -31,10 +31,11 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                     .requestMatchers(HttpMethod.PATCH, "/auth/update/**").hasRole("ADMIN")
-                    
+                    .requestMatchers(HttpMethod.GET, "/auth/get-all ").hasRole("ADMIN")
+
                     .requestMatchers(HttpMethod.GET, "/categories/**").authenticated()
                     .requestMatchers(HttpMethod.GET, "/products/**").authenticated()
-                    
+
                     .requestMatchers(HttpMethod.POST, "/categories/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/products/**").hasRole("SELLER")
                     .requestMatchers(HttpMethod.PATCH, "/categories/**").hasRole("ADMIN")
