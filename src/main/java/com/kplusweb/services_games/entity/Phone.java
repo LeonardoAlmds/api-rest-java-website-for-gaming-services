@@ -8,23 +8,30 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 4)
+    private String DDI;
+
+    @Column(nullable = false, length = 2)
+    private String DDD;
+
+    @Column(nullable = false, length = 9)
+    private String phone;
+
     @ManyToOne
     @JoinColumn(name = "personal_data_id", nullable = false)
     private PersonalData personalData;
 
-    @Column(name = "number", nullable = false, unique = true)
-    private String number;
-
     public Phone() {
     }
 
-    public Phone(Long id, PersonalData personalData, String number) {
-        this.id = id;
+    public Phone(String DDI, String DDD, String phone, PersonalData personalData, Long id) {
+        this.DDI = DDI;
+        this.DDD = DDD;
+        this.phone = phone;
         this.personalData = personalData;
-        this.number = number;
+        this.id = id;
     }
 
-    // Getters e setters
     public Long getId() {
         return id;
     }
@@ -33,19 +40,35 @@ public class Phone {
         this.id = id;
     }
 
+    public String getDDI() {
+        return DDI;
+    }
+
+    public void setDDI(String DDI) {
+        this.DDI = DDI;
+    }
+
+    public String getDDD() {
+        return DDD;
+    }
+
+    public void setDDD(String DDD) {
+        this.DDD = DDD;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public PersonalData getPersonalData() {
         return personalData;
     }
 
     public void setPersonalData(PersonalData personalData) {
         this.personalData = personalData;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
     }
 }
