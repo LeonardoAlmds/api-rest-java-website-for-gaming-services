@@ -1,6 +1,7 @@
 package com.kplusweb.services_games.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
@@ -46,30 +47,41 @@ public class UserService {
         return "User " + name + " is now a seller";
     }
 
-    // This function isn't working properly. Because it's not possible to register a personal data without a phone.
     public String registerPersonalData(PersonalDataDTO personalDataDTO) {
         PersonalData personalData = new PersonalData();
+
+        personalData.setName(personalDataDTO.name());
         personalData.setCpf(personalDataDTO.cpf());
         personalData.setBirthDate(personalDataDTO.birthDate());
-    
-        List<Phone> phones = personalDataDTO.phone_id().stream()
-                .map(phoneId -> {
-                    Phone phone = new Phone();
-                    phone.setId(phoneId);
-                    return phone;
-                })
-                .toList();
-        personalData.setPhones(phones);
-    
-        Address address = addressRepository.findById(personalDataDTO.addressId())
-                .orElseThrow(() -> new RuntimeException("Address not found: " + personalDataDTO.addressId()));
-        personalData.setAddress(address);
-    
+
+        if (personalDataDTO.phone_id() != null && !personalDataDTO.phone_id().isEmpty()) {
+            List<Phone> phones = personalDataDTO.phone_id().stream()
+                    .map(phoneId -> {
+                        Phone phone = new Phone();
+                        phone.setId(phoneId);
+                        return phone;
+                    })
+                    .collect(Collectors.toList());
+            personalData.setPhones(phones);
+        } else {
+            personalData.setPhones(null);
+        }
+
+        if (personalDataDTO.addressId() != null) {
+            Address address = addressRepository.findById(personalDataDTO.addressId())
+                    .orElseThrow(() -> new RuntimeException("Address not found: " + personalDataDTO.addressId()));
+            personalData.setAddress(address);
+        } else {
+            personalData.setAddress(null);
+        }
+
         User user = userRepository.findById(personalDataDTO.user_id())
                 .orElseThrow(() -> new RuntimeException("User not found: " + personalDataDTO.user_id()));
         personalData.setUser(user);
-    
+
         personalDataRepository.save(personalData);
         return "Personal data for user " + personalDataDTO.user_id() + " added successfully";
     }
+
+
 }

@@ -24,7 +24,7 @@ public class PersonalData {
     private List<Phone> phones;
 
     @OneToOne
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", nullable = true)
     private Address address;
 
     @OneToOne

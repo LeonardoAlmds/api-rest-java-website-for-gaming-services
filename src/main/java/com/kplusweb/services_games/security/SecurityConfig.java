@@ -39,6 +39,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/phone/post").authenticated()
                     .requestMatchers(HttpMethod.GET, "/phone/**").authenticated()
 
+                    .requestMatchers(HttpMethod.POST, "/personal_data/**").authenticated()
+
                     .requestMatchers(HttpMethod.POST, "/categories/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/products/**").hasRole("SELLER")
                     .requestMatchers(HttpMethod.PATCH, "/categories/**").hasRole("ADMIN")

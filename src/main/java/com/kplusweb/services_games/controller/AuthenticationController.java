@@ -54,7 +54,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
-    @PostMapping("/register/user")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid RegisterDTO registerDTO) {
         if (this.userRepository.findByLogin(registerDTO.login()) != null) {
             return ResponseEntity.badRequest().body("Login already exists");
@@ -67,11 +67,6 @@ public class AuthenticationController {
         this.userRepository.save(newUser);
     
         return ResponseEntity.ok("User registered successfully");
-    }
-
-    @PostMapping("/register/personal_data")
-    public ResponseEntity<String> registerPersonalData(@RequestBody @Valid PersonalDataDTO personalDataDTO) {
-        return ResponseEntity.ok(this.userService.registerPersonalData(personalDataDTO));
     }
     
     @PatchMapping("/update/{id}")
