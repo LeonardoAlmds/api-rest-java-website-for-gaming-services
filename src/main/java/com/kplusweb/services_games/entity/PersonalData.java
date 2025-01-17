@@ -99,4 +99,9 @@ public class PersonalData {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public PersonalData orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+    }
 }

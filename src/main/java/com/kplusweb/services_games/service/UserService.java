@@ -3,7 +3,6 @@ package com.kplusweb.services_games.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
 import com.kplusweb.services_games.dtos.PersonalDataDTO;
@@ -14,20 +13,15 @@ import com.kplusweb.services_games.entity.User;
 import com.kplusweb.services_games.repositories.AddressRepository;
 import com.kplusweb.services_games.repositories.PersonalDataRepository;
 import com.kplusweb.services_games.repositories.UserRepository;
-import com.kplusweb.services_games.security.TokenService;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final TokenService tokenService;
-    private final AuthenticationManager authorizationManager;
     private final PersonalDataRepository personalDataRepository;
     private final AddressRepository addressRepository;
 
-    public UserService(UserRepository userRepository, TokenService tokenService, AuthenticationManager authenticationManager, PersonalDataRepository personalDataRepository, AddressRepository addressRepository) {
+    public UserService(UserRepository userRepository, PersonalDataRepository personalDataRepository, AddressRepository addressRepository) {
         this.userRepository = userRepository;
-        this.tokenService = tokenService;
-        this.authorizationManager = authenticationManager;
         this.personalDataRepository = personalDataRepository;
         this.addressRepository = addressRepository;
     }
@@ -83,5 +77,68 @@ public class UserService {
         return "Personal data for user " + personalDataDTO.user_id() + " added successfully";
     }
 
+    public List<PersonalData> getAllPersonalData() {
+        return personalDataRepository.findAll();
+    }
 
+    public PersonalData getPersonalDataById(Long id) {
+        return personalDataRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Personal data not found: " + id));
+    }
+
+    public PersonalData getPersonalDataByName(String name) {
+        PersonalData personalData = personalDataRepository.findByName(name);
+        if (personalData == null) {
+            throw new RuntimeException("Personal data not found: " + name);
+        }
+        return personalData;
+    }
+
+    public PersonalData getPersonalDataByCpf(String cpf) {
+        PersonalData personalData = personalDataRepository.findByCpf(cpf);
+        if (personalData == null) {
+            throw new RuntimeException("Personal data not found: " + cpf);
+        }
+        return personalData;
+    }
+
+    // Isn't working properly
+    public String updatePersonalData(Long id, PersonalDataDTO personalDataDTO) {
+        PersonalData personalData = personalDataRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Personal data not found: " + id));
+
+        personalData.setName(personalDataDTO.name());
+        personalData.setCpf(personalDataDTO.cpf());
+        personalData.setBirthDate(personalDataDTO.birthDate());
+
+        if (personalDataDTO.phone_id() != null && !personalDataDTO.phone_id().isEmpty()) {
+            List<Phone> existingPhones = personalData.getPhones(); // Obter lista atual
+            List<Phone> updatedPhones = personalDataDTO.phone_id().stream()
+                    .map(phoneId -> existingPhones.stream()
+                            .filter(phone -> phone.getId().equals(phoneId))
+                            .findFirst()
+                            .orElseGet(() -> {
+                                Phone phone = new Phone();
+                                phone.setId(phoneId);
+                                return phone;
+                            }))
+                    .collect(Collectors.toList());
+            personalData.setPhones(updatedPhones);
+        }        
+
+        if (personalDataDTO.addressId() != null) {
+            Address address = addressRepository.findById(personalDataDTO.addressId())
+                    .orElseThrow(() -> new RuntimeException("Address not found: " + personalDataDTO.addressId()));
+            personalData.setAddress(address);
+        } else {
+            personalData.setAddress(null);
+        }
+
+        User user = userRepository.findById(personalDataDTO.user_id())
+                .orElseThrow(() -> new RuntimeException("User not found: " + personalDataDTO.user_id()));
+        personalData.setUser(user);
+
+        personalDataRepository.save(personalData);
+        return "Personal data updated successfully";
+    }
 }

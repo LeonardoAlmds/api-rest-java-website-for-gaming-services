@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.kplusweb.services_games.dtos.AuthenticationDTO;
 import com.kplusweb.services_games.dtos.LoginResponseDTO;
-import com.kplusweb.services_games.dtos.PersonalDataDTO;
 import com.kplusweb.services_games.dtos.RegisterDTO;
 import com.kplusweb.services_games.entity.User;
 import com.kplusweb.services_games.repositories.UserRepository;

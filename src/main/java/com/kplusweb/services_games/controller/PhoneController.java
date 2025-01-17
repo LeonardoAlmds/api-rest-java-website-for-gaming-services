@@ -1,7 +1,6 @@
 package com.kplusweb.services_games.controller;
 
 import com.kplusweb.services_games.dtos.PhoneDTO;
-import com.kplusweb.services_games.entity.Phone;
 import com.kplusweb.services_games.service.PhoneService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +36,7 @@ public class PhoneController {
 
     @PostMapping("/post")
     public ResponseEntity<String> post(@RequestBody PhoneDTO phoneDTO) {
-      String savedPhone = phoneService.postPhone(phoneDTO);
-      return ResponseEntity.ok(savedPhone);
+        String savedPhone = phoneService.postPhone(phoneDTO);
+        return ResponseEntity.ok(savedPhone);
     }
 }
