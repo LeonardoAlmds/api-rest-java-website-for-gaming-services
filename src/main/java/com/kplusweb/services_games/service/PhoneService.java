@@ -75,6 +75,11 @@ public class PhoneService {
         PersonalData personalData = personalDataRepository.findById(phoneDTO.personal_data())
                 .orElseThrow(() -> new ResourceNotFoundException("No personal data found with id: " + phoneDTO.personal_data()));
 
+        Optional<Phone> existingPhone = phoneRepository.findByPhoneAndPersonalDataId(phoneDTO.phone(), phoneDTO.personal_data());
+        if (existingPhone.isPresent()) {
+            throw new IllegalArgumentException("Phone already registered for this personal data.");
+        }
+
         Phone phone = new Phone();
         phone.setDDI(phoneDTO.DDI());
         phone.setDDD(phoneDTO.DDD());
@@ -89,12 +94,23 @@ public class PhoneService {
         Phone phone = phoneRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No phone found with id: " + id));
 
+        PersonalData personalData = personalDataRepository.findById(phoneDTO.personal_data())
+                .orElseThrow(() -> new ResourceNotFoundException("No personal data found with id: " + phoneDTO.personal_data()));
+
+        Optional<Phone> existingPhone = phoneRepository.findByPhoneAndPersonalDataId(phoneDTO.phone(), phoneDTO.personal_data());
+        if (existingPhone.isPresent() && !existingPhone.get().getId().equals(id)) {
+            throw new IllegalArgumentException("Phone already registered for this personal data.");
+        }
+
         phone.setDDI(phoneDTO.DDI());
         phone.setDDD(phoneDTO.DDD());
         phone.setPhone(phoneDTO.phone());
+        phone.setPersonalData(personalData);
+
         phoneRepository.save(phone);
         return "Phone updated successfully";
     }
+
 
     public String deletePhone(Long id) {
         Phone phone = phoneRepository.findById(id)

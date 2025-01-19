@@ -97,11 +97,11 @@ public class Address {
         this.complement = complement;
     }
 
-    public String getPostal_code() {
+    public String getPostalCode() {
         return postal_code;
     }
 
-    public void setPostal_code(String postal_code) {
+    public void setPostalCode(String postal_code) {
         this.postal_code = postal_code;
     }
 
