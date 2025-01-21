@@ -31,14 +31,14 @@ public class PersonalDataController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PersonalData>> getAllUsers() {
-        List<PersonalData> users = this.userService.getAllPersonalData();
+    public ResponseEntity<List<PersonalDataDTO>> getAllUsers() {
+        List<PersonalDataDTO> users = this.userService.getAllPersonalData();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<PersonalData> getUserById(@PathVariable Long id) {
-        PersonalData user = this.userService.getPersonalDataById(id);
+    public ResponseEntity<PersonalDataDTO> getUserById(@PathVariable Long id) {
+        PersonalDataDTO user = this.userService.getPersonalDataById(id);
         return ResponseEntity.ok(user);
     }
 
