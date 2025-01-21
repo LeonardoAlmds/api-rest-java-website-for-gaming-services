@@ -66,7 +66,7 @@ public class PhoneController {
         }
     }
 
-    @PatchMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updatePhone(@PathVariable Long id, @RequestBody PhoneDTO phoneDTO) {
         try {
             String updatedPhone = phoneService.updatePhone(id, phoneDTO);
