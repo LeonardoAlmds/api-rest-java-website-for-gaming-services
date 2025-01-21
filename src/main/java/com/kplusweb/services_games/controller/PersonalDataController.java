@@ -19,20 +19,20 @@ public class PersonalDataController {
         this.userService = userService;
     }
 
-    @PostMapping("/post")
+    @PostMapping("/register")
     public ResponseEntity<String> registerPersonalData(@RequestBody @Valid PersonalDataDTO personalDataDTO) {
         return ResponseEntity.ok(this.userService.registerPersonalData(personalDataDTO));
     }
 
-    @GetMapping("/get-all")
-    public ResponseEntity<List<PersonalData>> getAllUsers() {
-        List<PersonalData> users = this.userService.getAllPersonalData();
+    @GetMapping("/all")
+    public ResponseEntity<List<PersonalDataDTO>> getAllUsers() {
+        List<PersonalDataDTO> users = this.userService.getAllPersonalData();
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PersonalData> getUserById(@PathVariable Long id) {
-        PersonalData user = this.userService.getPersonalDataById(id);
+    @GetMapping("/get-by-id/{id}")
+    public ResponseEntity<PersonalDataDTO> getUserById(@PathVariable Long id) {
+        PersonalDataDTO user = this.userService.getPersonalDataById(id);
         return ResponseEntity.ok(user);
     }
 

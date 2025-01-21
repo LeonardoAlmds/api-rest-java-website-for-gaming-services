@@ -77,13 +77,32 @@ public class UserService {
         return "Personal data for user " + personalDataDTO.user_id() + " added successfully";
     }
 
-    public List<PersonalData> getAllPersonalData() {
-        return personalDataRepository.findAll();
+    public List<PersonalDataDTO> getAllPersonalData() {
+        return personalDataRepository.findAll().stream()
+            .map(personalData -> new PersonalDataDTO(
+            personalData.getId(),
+            personalData.getName(),
+            personalData.getCpf(),
+            personalData.getBirthDate(),
+            personalData.getUser().getId(),
+            personalData.getPhones().stream().map(Phone::getId).collect(Collectors.toList()),
+            personalData.getAddress().getId()
+            ))
+            .collect(Collectors.toList());
     }
 
-    public PersonalData getPersonalDataById(Long id) {
-        return personalDataRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Personal data not found: " + id));
+    public PersonalDataDTO getPersonalDataById(Long id) {
+        PersonalData personalData = personalDataRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Personal data not found: " + id));
+        return new PersonalDataDTO(
+            personalData.getId(),
+            personalData.getName(),
+            personalData.getCpf(),
+            personalData.getBirthDate(),
+            personalData.getUser().getId(),
+            personalData.getPhones().stream().map(Phone::getId).collect(Collectors.toList()),
+            personalData.getAddress().getId()
+        );
     }
 
     public PersonalData getPersonalDataByName(String name) {

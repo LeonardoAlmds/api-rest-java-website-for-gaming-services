@@ -20,7 +20,7 @@ public class Product {
     @Column(nullable = false)
     private String image_url;
 
-    @Column(nullable = false)
+    @Column
     private Double price;
 
     @Column(nullable = false)
@@ -43,9 +43,13 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "seller_id", nullable = false)
+    private User user;    
+
     public Product() {}
 
-    public Product(Long id, String name, String description, String image_url, Double price, Integer stock_quantity, Integer sold_quantity, Date posted_date, Status status, Integer rating, Category category) {
+    public Product(Long id, String name, String description, String image_url, Double price, Integer stock_quantity, Integer sold_quantity, Date posted_date, Status status, Integer rating, Category category, User user) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -57,6 +61,7 @@ public class Product {
         this.status = status;
         this.rating = rating;
         this.category = category;
+        this.user = user;
     }
 
     public Long getId() {
@@ -145,6 +150,14 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public enum Status {
