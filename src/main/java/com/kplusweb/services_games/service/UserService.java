@@ -1,5 +1,6 @@
 package com.kplusweb.services_games.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,17 +79,24 @@ public class UserService {
     }
 
     public List<PersonalDataDTO> getAllPersonalData() {
-        return personalDataRepository.findAll().stream()
-            .map(personalData -> new PersonalDataDTO(
-            personalData.getId(),
-            personalData.getName(),
-            personalData.getCpf(),
-            personalData.getBirthDate(),
-            personalData.getUser().getId(),
-            personalData.getPhones().stream().map(Phone::getId).collect(Collectors.toList()),
-            personalData.getAddress().getId()
-            ))
-            .collect(Collectors.toList());
+        List<PersonalData> personalDataList = personalDataRepository.findAll();
+
+        if (personalDataList == null || personalDataList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return personalDataList.stream()
+                .map(personalData -> new PersonalDataDTO(
+                        personalData.getId(),
+                        personalData.getName(),
+                        personalData.getCpf(),
+                        personalData.getBirthDate(),
+                        personalData.getAddress() != null ? personalData.getAddress().getId() : null,
+                        personalData.getPhones() != null ?
+                                personalData.getPhones().stream().map(Phone::getId).collect(Collectors.toList()) : Collections.emptyList(),
+                        personalData.getUser() != null ? personalData.getUser().getId() : null
+                ))
+                .collect(Collectors.toList());
     }
 
     public PersonalDataDTO getPersonalDataById(Long id) {

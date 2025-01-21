@@ -3,7 +3,7 @@ package com.kplusweb.services_games.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "adress")
+@Table(name = "address")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
