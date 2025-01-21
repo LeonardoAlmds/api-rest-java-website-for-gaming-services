@@ -30,16 +30,7 @@ public class AddressService {
         }
 
         return addresses.stream()
-                .map(address -> new AddressDTO(
-                        address.getId(),
-                        address.getPostalCode(),
-                        address.getCity(),
-                        address.getNeighborhood(),
-                        address.getStreet(),
-                        address.getNumber(),
-                        address.getCountry(),
-                        address.getComplement(),
-                        address.getPersonalData().getId()))
+                .map(this::mapToAddressDTO)
                 .collect(Collectors.toList());
     }
 
@@ -51,16 +42,7 @@ public class AddressService {
         }
 
         return addresses.stream()
-                .map(address -> new AddressDTO(
-                        address.getId(),
-                        address.getPostalCode(),
-                        address.getCity(),
-                        address.getNeighborhood(),
-                        address.getStreet(),
-                        address.getNumber(),
-                        address.getCountry(),
-                        address.getComplement(),
-                        address.getPersonalData().getId()))
+                .map(this::mapToAddressDTO)
                 .collect(Collectors.toList());
     }
 
@@ -68,16 +50,7 @@ public class AddressService {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No address found with id: " + id));
 
-        return new AddressDTO(
-                address.getId(),
-                address.getPostalCode(),
-                address.getCity(),
-                address.getNeighborhood(),
-                address.getStreet(),
-                address.getNumber(),
-                address.getCountry(),
-                address.getComplement(),
-                address.getPersonalData().getId());
+        return mapToAddressDTO(address);
     }
 
     public String postAddress(AddressDTO addressDTO) {
@@ -89,15 +62,7 @@ public class AddressService {
             throw new IllegalArgumentException("Address already registered for this personal data.");
         }
 
-        Address address = new Address();
-        address.setPostalCode(addressDTO.postalCode());
-        address.setCity(addressDTO.city());
-        address.setNeighborhood(addressDTO.neighborhood());
-        address.setStreet(addressDTO.street());
-        address.setNumber(addressDTO.number());
-        address.setCountry(addressDTO.country());
-        address.setComplement(addressDTO.complement());
-        address.setPersonalData(personalData);
+        Address address = mapToEntity(new Address(), addressDTO, personalData);
 
         addressRepository.save(address);
         return "Address registered successfully";
@@ -115,14 +80,7 @@ public class AddressService {
             throw new IllegalArgumentException("Address already registered for this personal data.");
         }
 
-        address.setPostalCode(addressDTO.postalCode());
-        address.setCity(addressDTO.city());
-        address.setNeighborhood(addressDTO.neighborhood());
-        address.setStreet(addressDTO.street());
-        address.setNumber(addressDTO.number());
-        address.setCountry(addressDTO.country());
-        address.setComplement(addressDTO.complement());
-        address.setPersonalData(personalData);
+        mapToEntity(address, addressDTO, personalData);
 
         addressRepository.save(address);
         return "Address updated successfully";
@@ -134,5 +92,31 @@ public class AddressService {
 
         addressRepository.delete(address);
         return "Address deleted successfully";
+    }
+
+    private AddressDTO mapToAddressDTO(Address address) {
+        return new AddressDTO(
+                address.getId(),
+                address.getPostalCode(),
+                address.getCity(),
+                address.getNeighborhood(),
+                address.getStreet(),
+                address.getNumber(),
+                address.getCountry(),
+                address.getComplement(),
+                address.getPersonalData().getId()
+        );
+    }
+
+    private Address mapToEntity(Address address, AddressDTO addressDTO, PersonalData personalData) {
+        address.setPostalCode(addressDTO.postalCode());
+        address.setCity(addressDTO.city());
+        address.setNeighborhood(addressDTO.neighborhood());
+        address.setStreet(addressDTO.street());
+        address.setNumber(addressDTO.number());
+        address.setCountry(addressDTO.country());
+        address.setComplement(addressDTO.complement());
+        address.setPersonalData(personalData);
+        return address;
     }
 }

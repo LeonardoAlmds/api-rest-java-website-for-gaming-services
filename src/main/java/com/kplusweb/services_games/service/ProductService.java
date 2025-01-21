@@ -61,7 +61,7 @@ public class ProductService {
                 product.getPosted_date(),
                 product.getStatus().toString(),
                 product.getRating(),
-                product.getCategory().getId() // Retornar apenas o ID da categoria
+                product.getCategory().getId()
         );
     }
 

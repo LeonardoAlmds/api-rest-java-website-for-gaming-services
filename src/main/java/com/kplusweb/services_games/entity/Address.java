@@ -25,7 +25,7 @@ public class Address {
     private String complement;
 
     @Column(name = "postal_code")
-    private String postal_code;
+    private String postalCode;
 
     @Column(name = "country")
     private String country;
@@ -44,7 +44,7 @@ public class Address {
         this.street = street;
         this.number = number;
         this.complement = complement;
-        this.postal_code = postal_code;
+        this.postalCode = postal_code;
         this.country = country;
         this.personalData = personalData;
     }
@@ -98,11 +98,11 @@ public class Address {
     }
 
     public String getPostalCode() {
-        return postal_code;
+        return postalCode;
     }
 
     public void setPostalCode(String postal_code) {
-        this.postal_code = postal_code;
+        this.postalCode = postal_code;
     }
 
     public String getCountry() {
