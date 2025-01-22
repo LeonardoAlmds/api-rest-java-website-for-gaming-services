@@ -9,6 +9,7 @@ import com.kplusweb.services_games.entity.User;
 import com.kplusweb.services_games.repositories.UserRepository;
 import com.kplusweb.services_games.security.TokenService;
 import com.kplusweb.services_games.service.UserService;
+import com.kplusweb.services_games.dtos.RegisterResponseDTO;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,24 +51,25 @@ public class AuthenticationController {
         var auth = authenticationManager.authenticate(usernamePasswordToken);
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(new LoginResponseDTO(token, ((User) auth.getPrincipal()).getId()));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody @Valid RegisterDTO registerDTO) {
+    public ResponseEntity<RegisterResponseDTO> registerUser(@RequestBody @Valid RegisterDTO registerDTO) {
         if (this.userRepository.findByLogin(registerDTO.login()) != null) {
-            return ResponseEntity.badRequest().body("Login already exists");
+            return ResponseEntity.badRequest().body(new RegisterResponseDTO("Login already exists", null));
         }
-    
+
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
-    
+
         User newUser = new User(registerDTO.login(), encryptedPassword, User.Role.USER);
-    
-        this.userRepository.save(newUser);
-    
-        return ResponseEntity.ok("User registered successfully");
+
+        User savedUser = this.userRepository.save(newUser);
+
+        RegisterResponseDTO response = new RegisterResponseDTO("User registered successfully", savedUser.getId());
+        return ResponseEntity.ok(response);
     }
-    
+
     @PatchMapping("/update/{id}")
     public ResponseEntity<String> updateRoleToSeller(@PathVariable Long id) {
         if (this.userRepository.findById(id).isEmpty()) {
