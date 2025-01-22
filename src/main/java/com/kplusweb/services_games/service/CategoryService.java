@@ -92,7 +92,11 @@ public class CategoryService {
                         product.getPosted_date(),
                         product.getStatus().toString(),
                         product.getRating(),
-                        product.getCategory().getId()
+                        product.getCategory().getId(),
+                        product.getUser().getId(),
+                        product.getSubProducts().stream()
+                                .map(subProduct -> subProduct.getId())
+                                .collect(Collectors.toList())
                 ))
                 .collect(Collectors.toList());
     }

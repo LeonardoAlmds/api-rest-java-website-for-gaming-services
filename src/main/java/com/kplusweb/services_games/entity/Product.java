@@ -1,5 +1,6 @@
 package com.kplusweb.services_games.entity;
 
+import java.util.List;
 import java.sql.Date;
 
 import jakarta.persistence.*;
@@ -45,11 +46,14 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
-    private User user;    
+    private User user;  
+    
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SubProduct> subProducts;    
 
     public Product() {}
 
-    public Product(Long id, String name, String description, String image_url, Double price, Integer stock_quantity, Integer sold_quantity, Date posted_date, Status status, Integer rating, Category category, User user) {
+    public Product(Long id, String name, String description, String image_url, Double price, Integer stock_quantity, Integer sold_quantity, Date posted_date, Status status, Integer rating, Category category, User user, List<SubProduct> subProducts) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -62,6 +66,7 @@ public class Product {
         this.rating = rating;
         this.category = category;
         this.user = user;
+        this.subProducts = subProducts;
     }
 
     public Long getId() {
@@ -158,6 +163,14 @@ public class Product {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<SubProduct> getSubProducts() {
+        return subProducts;
+    }
+
+    public void setSubProducts(List<SubProduct> subProducts) {
+        this.subProducts = subProducts;
     }
 
     public enum Status {

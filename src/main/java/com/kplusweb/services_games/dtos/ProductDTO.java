@@ -1,5 +1,6 @@
 package com.kplusweb.services_games.dtos;
 
+import java.util.List;
 import java.sql.Date;
 
 public record ProductDTO(
@@ -13,6 +14,8 @@ public record ProductDTO(
         Date posted_date,
         String status,
         Integer rating,
-        Long category_id
+        Long category_id,
+        Long seller_id,
+        List<Long> subProducts
 ) {}
 
