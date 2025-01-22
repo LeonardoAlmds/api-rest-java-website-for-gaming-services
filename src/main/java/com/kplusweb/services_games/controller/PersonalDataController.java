@@ -24,7 +24,7 @@ public class PersonalDataController {
         return ResponseEntity.ok(this.userService.registerPersonalData(personalDataDTO));
     }
 
-    @GetMapping("/all")
+    @GetMapping("/get-all")
     public ResponseEntity<List<PersonalDataDTO>> getAllUsers() {
         List<PersonalDataDTO> users = this.userService.getAllPersonalData();
         return ResponseEntity.ok(users);
@@ -33,18 +33,6 @@ public class PersonalDataController {
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<PersonalDataDTO> getUserById(@PathVariable Long id) {
         PersonalDataDTO user = this.userService.getPersonalDataById(id);
-        return ResponseEntity.ok(user);
-    }
-
-    @GetMapping("/get-by-cpf/{cpf}")
-    public ResponseEntity<PersonalData> getUserByCpf(@PathVariable String cpf) {
-        PersonalData user = this.userService.getPersonalDataByCpf(cpf);
-        return ResponseEntity.ok(user);
-    }
-
-    @GetMapping("/get-by-name/{name}")
-    public ResponseEntity<PersonalData> getUserByName(@PathVariable String name) {
-        PersonalData user = this.userService.getPersonalDataByName(name);
         return ResponseEntity.ok(user);
     }
 

@@ -64,8 +64,12 @@ public class AddressService {
 
         Address address = mapToEntity(new Address(), addressDTO, personalData);
 
-        addressRepository.save(address);
-        return "Address registered successfully";
+        address = addressRepository.save(address);
+
+        personalData.setAddress(address);
+        personalDataRepository.save(personalData);
+
+        return "Address registered successfully and linked to personal data";
     }
 
     public String updateAddress(Long id, AddressDTO addressDTO) {

@@ -91,7 +91,8 @@ public class UserService {
                         personalData.getName(),
                         personalData.getCpf(),
                         personalData.getBirthDate(),
-                        personalData.getAddress() != null ? personalData.getAddress().getId() : null,
+                        personalData.getAddress() != null ?
+                                personalData.getAddress().getId() : null,
                         personalData.getPhones() != null ?
                                 personalData.getPhones().stream().map(Phone::getId).collect(Collectors.toList()) : Collections.emptyList(),
                         personalData.getUser() != null ? personalData.getUser().getId() : null
@@ -101,35 +102,20 @@ public class UserService {
 
     public PersonalDataDTO getPersonalDataById(Long id) {
         PersonalData personalData = personalDataRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Personal data not found: " + id));
+                .orElseThrow(() -> new RuntimeException("Personal data not found: " + id));
+
         return new PersonalDataDTO(
-            personalData.getId(),
-            personalData.getName(),
-            personalData.getCpf(),
-            personalData.getBirthDate(),
-            personalData.getUser().getId(),
-            personalData.getPhones().stream().map(Phone::getId).collect(Collectors.toList()),
-            personalData.getAddress().getId()
+                personalData.getId(),
+                personalData.getName(),
+                personalData.getCpf(),
+                personalData.getBirthDate(),
+                personalData.getAddress() != null ? personalData.getAddress().getId() : null,
+                personalData.getPhones() != null ?
+                        personalData.getPhones().stream().map(Phone::getId).collect(Collectors.toList()) : Collections.emptyList(),
+                personalData.getUser() != null ? personalData.getUser().getId() : null
         );
     }
 
-    public PersonalData getPersonalDataByName(String name) {
-        PersonalData personalData = personalDataRepository.findByName(name);
-        if (personalData == null) {
-            throw new RuntimeException("Personal data not found: " + name);
-        }
-        return personalData;
-    }
-
-    public PersonalData getPersonalDataByCpf(String cpf) {
-        PersonalData personalData = personalDataRepository.findByCpf(cpf);
-        if (personalData == null) {
-            throw new RuntimeException("Personal data not found: " + cpf);
-        }
-        return personalData;
-    }
-
-    // Isn't working properly
     public String updatePersonalData(Long id, PersonalDataDTO personalDataDTO) {
         PersonalData personalData = personalDataRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Personal data not found: " + id));
