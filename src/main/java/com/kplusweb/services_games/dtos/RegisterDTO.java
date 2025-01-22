@@ -1,6 +1,6 @@
 package com.kplusweb.services_games.dtos;
 
-public record RegisterDTO(String login, String password) {
+public record RegisterDTO(String login, String password, Long Id) {
     public RegisterDTO {
         if (login == null || login.isBlank()) {
             throw new IllegalArgumentException("Login cannot be null or empty");
