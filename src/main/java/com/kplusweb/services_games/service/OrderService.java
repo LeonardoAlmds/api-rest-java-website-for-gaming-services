@@ -60,23 +60,18 @@ public class OrderService {
     public String postOrder(OrderDTO orderDTO) {
         Order order = convertToEntity(orderDTO);
         orderRepository.save(order);
+        
         return "Order added successfully.";
     }
 
-    public String updateOrder(Long id, OrderDTO orderDTO) {
+    public String updateOrderStatus(Long id, String status) {
         Order order = orderRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Order with id " + id + " not found."));
 
-        order.setUser(userRepository.findById(orderDTO.userId())
-            .orElseThrow(() -> new ResourceNotFoundException("User with id " + orderDTO.userId() + " not found.")));
-        order.setProduct(productRepository.findById(orderDTO.productId())
-            .orElseThrow(() -> new ResourceNotFoundException("Product with id " + orderDTO.productId() + " not found.")));
-        order.setSubProduct(subProductRepository.findById(orderDTO.subProductId())
-            .orElseThrow(() -> new ResourceNotFoundException("SubProduct with id " + orderDTO.subProductId() + " not found.")));
-        order.setOrderDate(orderDTO.orderDate());
-        order.setStatus(Order.Status.valueOf(orderDTO.status()));
+        order.setStatus(Order.Status.valueOf(status));
         orderRepository.save(order);
-        return "Order updated successfully.";
+        
+        return "Order status updated successfully.";
     }
 
     public String deleteOrder(Long id) {

@@ -1,5 +1,6 @@
 package com.kplusweb.services_games.controller;
 
+import java.util.Map;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -54,14 +55,22 @@ public class OrderController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody OrderDTO order) {
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
         try {
-            String updatedOrder = orderService.updateOrder(id, order);
+            String status = body.get("status");
+            if (status == null || status.isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Status field is missing or empty.");
+            }
+            String updatedOrder = orderService.updateOrderStatus(id, status);
             return ResponseEntity.ok(updatedOrder);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid status: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
         }
-    }
+    }    
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
