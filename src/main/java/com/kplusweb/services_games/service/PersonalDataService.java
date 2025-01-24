@@ -104,4 +104,10 @@ public class PersonalDataService {
         personalData.setUser(user);
     }
 
+    public boolean deletePersonalData(Long id) {
+        PersonalData personalData = personalDataRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Personal data not found: " + id));
+        personalDataRepository.delete(personalData);
+        return true;
+    }
 }

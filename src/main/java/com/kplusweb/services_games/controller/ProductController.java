@@ -19,26 +19,56 @@ public class ProductController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        List<ProductDTO> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
+    public ResponseEntity<?> getAllProducts() {
+        try {
+            List<ProductDTO> products = productService.getAllProducts();
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        ProductDTO product = productService.getProductById(id);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<?> getProductById(@PathVariable Long id) {
+        try {
+            ProductDTO product = productService.getProductById(id);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @PostMapping("/post")
-    public ResponseEntity<String> postProduct(@RequestBody ProductDTO product) {
-        String savedProduct = productService.postProduct(product);
-        return ResponseEntity.ok(savedProduct);
+    public ResponseEntity<?> postProduct(@RequestBody ProductDTO productDTO) {
+        try {
+            productService.postProduct(productDTO);
+            return ResponseEntity.ok("Product saved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-        productService.updateProduct(id, productDTO);
-        return ResponseEntity.ok("Product updated successfully");
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        try {
+            productService.updateProduct(id, productDTO);
+            return ResponseEntity.ok("Product updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+        try {
+            boolean deletedProduct = this.productService.deleteProduct(id);
+            if (deletedProduct) {
+                return ResponseEntity.ok("Product deleted successfully");
+            } else {
+                return ResponseEntity.ok("Product not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 }

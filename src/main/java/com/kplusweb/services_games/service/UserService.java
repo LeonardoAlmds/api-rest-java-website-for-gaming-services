@@ -1,15 +1,9 @@
 package com.kplusweb.services_games.service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.kplusweb.services_games.dtos.PersonalDataDTO;
-import com.kplusweb.services_games.entity.Address;
-import com.kplusweb.services_games.entity.PersonalData;
-import com.kplusweb.services_games.entity.Phone;
 import com.kplusweb.services_games.entity.User;
 import com.kplusweb.services_games.repositories.AddressRepository;
 import com.kplusweb.services_games.repositories.PersonalDataRepository;

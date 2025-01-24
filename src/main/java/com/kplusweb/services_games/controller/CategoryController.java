@@ -18,32 +18,56 @@ public class CategoryController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-        List<CategoryDTO> categories = categoryService.getAllCategories();
-        return ResponseEntity.ok(categories);
+    public ResponseEntity<?> getAllCategories() {
+        try {
+            List<CategoryDTO> categories = categoryService.getAllCategories();
+            return ResponseEntity.ok(categories);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable("id") Long id) {
-        CategoryDTO categoryDTO = categoryService.getCategoryById(id);
-        return ResponseEntity.ok(categoryDTO);
+    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
+        try {
+            CategoryDTO category = categoryService.getCategoryById(id);
+            return ResponseEntity.ok(category);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @PostMapping("/post")
-    public ResponseEntity<String> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        String savedCategory = categoryService.postCategory(categoryDTO);
-        return ResponseEntity.ok(savedCategory);
+    public ResponseEntity<?> postCategory(@RequestBody CategoryDTO categoryDTO) {
+        try {
+            String savedCategory = categoryService.postCategory(categoryDTO);
+            return ResponseEntity.ok(savedCategory);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateCategory(@PathVariable("id") Long id, @RequestBody CategoryDTO categoryDTO) {
-        categoryService.updateCategory(id, categoryDTO);
-        return ResponseEntity.ok("Category updated successfully");
+    public ResponseEntity<?> updateCategory(@PathVariable("id") Long id, @RequestBody CategoryDTO categoryDTO) {
+        try {
+            String updatedCategory = categoryService.updateCategory(id, categoryDTO);
+            return ResponseEntity.ok(updatedCategory);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteCategory(@PathVariable("id") Long id) {
-        categoryService.deleteCategory(id);
-        return ResponseEntity.ok("Category deleted successfully");
+    public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id) {
+        try {
+            boolean isDeleted = categoryService.deleteCategory(id);
+            if (isDeleted) {
+                return ResponseEntity.ok("Category deleted successfully");
+            } else {
+                return ResponseEntity.status(500).body("Failed to delete category");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 }

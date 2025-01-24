@@ -105,4 +105,11 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Category not found with ID: " + productDTO.category_id()));
         product.setCategory(category);
     }
+
+    public boolean deleteProduct(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found: " + id));
+        productRepository.delete(product);
+        return true;
+    }
 }
