@@ -20,14 +20,14 @@ public class AddressController {
 
     @GetMapping("/get-all")
     public ResponseEntity<?> getAll() {
-       try {
-           List<AddressDTO> address = addressService.getAllAddresses();
-           return new ResponseEntity<>(address, HttpStatus.OK);
-       } catch (ResourceNotFoundException e) {
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-       } catch (Exception e) {
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-       }
+        try {
+            List<AddressDTO> address = addressService.getAllAddresses();
+            return new ResponseEntity<>(address, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @GetMapping("{id}")

@@ -88,8 +88,12 @@ public class OrderService {
             .orElseThrow(() -> new ResourceNotFoundException("User with id " + orderDTO.userId() + " not found.")));
         order.setProduct(productRepository.findById(orderDTO.productId())
             .orElseThrow(() -> new ResourceNotFoundException("Product with id " + orderDTO.productId() + " not found.")));
-        order.setSubProduct(subProductRepository.findById(orderDTO.subProductId())
+        if (orderDTO.subProductId() != null) {
+            order.setSubProduct(subProductRepository.findById(orderDTO.subProductId())
             .orElseThrow(() -> new ResourceNotFoundException("SubProduct with id " + orderDTO.subProductId() + " not found.")));
+        } else {
+            order.setSubProduct(null);
+        }
         order.setOrderDate(orderDTO.orderDate());
         order.setStatus(Order.Status.valueOf(orderDTO.status()));
         return order;
