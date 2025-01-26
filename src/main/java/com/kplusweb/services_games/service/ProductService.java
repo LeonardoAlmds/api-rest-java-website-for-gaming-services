@@ -40,6 +40,13 @@ public class ProductService {
         return convertToDTO(product);
     }
 
+    public List<ProductDTO> getProductsByCategory(Long categoryId) {
+        List<Product> products = productRepository.findByCategoryId(categoryId);
+        return products.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public String postProduct(ProductDTO productDTO) {
         Product product = convertToEntity(productDTO);
         productRepository.save(product);

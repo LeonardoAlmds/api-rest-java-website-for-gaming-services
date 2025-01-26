@@ -38,6 +38,16 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> getProductsByCategory(@PathVariable Long categoryId) {
+        try {
+            List<ProductDTO> products = productService.getProductsByCategory(categoryId);
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
     @PostMapping("/post")
     public ResponseEntity<?> postProduct(@RequestBody ProductDTO productDTO) {
         try {

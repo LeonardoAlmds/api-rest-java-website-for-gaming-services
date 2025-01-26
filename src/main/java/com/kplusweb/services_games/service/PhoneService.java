@@ -4,7 +4,6 @@ import com.kplusweb.services_games.dtos.PhoneDTO;
 import com.kplusweb.services_games.entity.PersonalData;
 import com.kplusweb.services_games.entity.Phone;
 import com.kplusweb.services_games.exceptions.ResourceNotFoundException;
-import com.kplusweb.services_games.repositories.CategoryRepository;
 import com.kplusweb.services_games.repositories.PersonalDataRepository;
 import com.kplusweb.services_games.repositories.PhoneRepository;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class PhoneService {
-    private final CategoryRepository categoryRepository;
     private final PersonalDataRepository personalDataRepository;
     private final PhoneRepository phoneRepository;
 
-    public PhoneService(PhoneRepository phoneRepository, CategoryRepository categoryRepository, PersonalDataRepository personalDataRepository) {
+    public PhoneService(PhoneRepository phoneRepository, PersonalDataRepository personalDataRepository) {
         this.phoneRepository = phoneRepository;
-        this.categoryRepository = categoryRepository;
         this.personalDataRepository = personalDataRepository;
     }
 

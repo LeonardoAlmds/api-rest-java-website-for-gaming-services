@@ -5,20 +5,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.kplusweb.services_games.entity.User;
-import com.kplusweb.services_games.repositories.AddressRepository;
-import com.kplusweb.services_games.repositories.PersonalDataRepository;
 import com.kplusweb.services_games.repositories.UserRepository;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final PersonalDataRepository personalDataRepository;
-    private final AddressRepository addressRepository;
 
-    public UserService(UserRepository userRepository, PersonalDataRepository personalDataRepository, AddressRepository addressRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.personalDataRepository = personalDataRepository;
-        this.addressRepository = addressRepository;
     }
 
     public List<User> getAllUsers() {
