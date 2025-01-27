@@ -27,6 +27,11 @@ public class CategoryController {
         }
     }
 
+    @GetMapping("/top")
+    public List<CategoryDTO> getTopCategoriesByProductCount() {
+        return categoryService.getTopCategoriesByProductCount();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
         try {
