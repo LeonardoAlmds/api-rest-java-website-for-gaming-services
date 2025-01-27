@@ -37,8 +37,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = false)
-    private Integer rating;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -53,7 +53,7 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long id, String name, String description, String image_url, Double price, Integer stock_quantity, Integer sold_quantity, Date posted_date, Status status, Integer rating, Category category, User user, List<SubProduct> subProducts) {
+    public Product(Long id, String name, String description, String image_url, Double price, Integer stock_quantity, Integer sold_quantity, Date posted_date, Status status, List<Rating> ratings, Category category, User user, List<SubProduct> subProducts) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -63,7 +63,7 @@ public class Product {
         this.sold_quantity = sold_quantity;
         this.posted_date = posted_date;
         this.status = status;
-        this.rating = rating;
+        this.ratings = ratings;
         this.category = category;
         this.user = user;
         this.subProducts = subProducts;
@@ -141,12 +141,12 @@ public class Product {
         this.status = status;
     }
 
-    public Integer getRating() {
-        return rating;
+    public List<Rating> getRatings() {
+        return ratings;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
     }
 
     public Category getCategory() {

@@ -13,7 +13,7 @@ public record ProductDTO(
         Integer sold_quantity,
         Date posted_date,
         String status,
-        Integer rating,
+        List<Long> ratings,
         Long category_id,
         Long seller_id,
         List<Long> subProducts
