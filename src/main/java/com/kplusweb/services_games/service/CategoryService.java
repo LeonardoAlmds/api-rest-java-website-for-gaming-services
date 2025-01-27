@@ -47,6 +47,23 @@ public class CategoryService {
         );
     }
 
+    public List<CategoryDTO> getTopCategoriesByProductCount() {
+        List<Category> categories = categoryRepository.findAll();
+
+        return categories.stream()
+                .sorted((category1, category2) -> Integer.compare(category2.getProducts().size(), category1.getProducts().size()))
+                .limit(6)
+                .map(category -> new CategoryDTO(
+                        category.getId(),
+                        category.getName(),
+                        category.getAcronym(),
+                        category.getIcon_url(),
+                        category.getBanner_url(),
+                        null
+                ))
+                .collect(Collectors.toList());
+    }
+
     public String postCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         category.setName(categoryDTO.name());
