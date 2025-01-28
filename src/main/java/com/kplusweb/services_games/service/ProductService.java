@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductService {
@@ -51,6 +52,20 @@ public class ProductService {
                 return products.stream()
                                 .map(this::convertToDTO)
                                 .collect(Collectors.toList());
+        }
+
+        @Transactional(readOnly = true)
+        public List<ProductDTO> getTopRatedProducts() {
+                List<Product> products = productRepository.findAll();
+        
+                return products.stream()
+                        .filter(product -> product.getRatings() != null && !product.getRatings().isEmpty())
+                        .sorted((p1, p2) -> Double.compare(
+                                p2.getRatings().stream().mapToInt(r -> r.getScore()).average().orElse(0),
+                                p1.getRatings().stream().mapToInt(r -> r.getScore()).average().orElse(0)))
+                        .limit(12) // Limit to 12 products, can be changed
+                        .map(this::convertToDTO)
+                        .collect(Collectors.toList());
         }
 
         public String postProduct(ProductDTO productDTO) {

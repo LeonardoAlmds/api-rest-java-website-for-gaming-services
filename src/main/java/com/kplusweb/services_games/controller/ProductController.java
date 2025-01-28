@@ -48,6 +48,11 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/top-rated")
+    public ResponseEntity<List<ProductDTO>> getTopRatedProducts() {
+        return ResponseEntity.ok(productService.getTopRatedProducts());
+    }
+
     @PostMapping("/post")
     public ResponseEntity<?> postProduct(@RequestBody ProductDTO productDTO) {
         try {
