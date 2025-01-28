@@ -1,7 +1,9 @@
 package com.kplusweb.services_games.entity;
 
 import java.util.List;
-import java.sql.Date;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
@@ -30,8 +32,9 @@ public class Product {
     @Column(nullable = false)
     private Integer sold_quantity;
 
-    @Column(nullable = false)
-    private Date posted_date;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime posted_date;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -53,7 +56,7 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long id, String name, String description, String image_url, Double price, Integer stock_quantity, Integer sold_quantity, Date posted_date, Status status, List<Rating> ratings, Category category, User user, List<SubProduct> subProducts) {
+    public Product(Long id, String name, String description, String image_url, Double price, Integer stock_quantity, Integer sold_quantity, Status status, List<Rating> ratings, Category category, User user, List<SubProduct> subProducts) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -61,7 +64,6 @@ public class Product {
         this.price = price;
         this.stock_quantity = stock_quantity;
         this.sold_quantity = sold_quantity;
-        this.posted_date = posted_date;
         this.status = status;
         this.ratings = ratings;
         this.category = category;
@@ -125,11 +127,11 @@ public class Product {
         this.sold_quantity = sold_quantity;
     }
 
-    public Date getPosted_date() {
+    public LocalDateTime getPosted_date() {
         return posted_date;
     }
 
-    public void setPosted_date(Date posted_date) {
+    public void setPosted_date(LocalDateTime posted_date) {
         this.posted_date = posted_date;
     }
 

@@ -9,6 +9,7 @@ import com.kplusweb.services_games.repositories.ProductRepository;
 import com.kplusweb.services_games.repositories.RatingRepository;
 import com.kplusweb.services_games.repositories.SubProductRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,7 +102,7 @@ public class ProductService {
                 product.setPrice(productDTO.price());
                 product.setStock_quantity(productDTO.stock_quantity());
                 product.setSold_quantity(productDTO.sold_quantity());
-                product.setPosted_date(productDTO.posted_date());
+                product.setPosted_date(LocalDateTime.now());
                 product.setStatus(Product.Status.valueOf(productDTO.status()));
                 product.setRatings(productDTO.ratings() != null ? productDTO.ratings().stream()
                                 .map(ratingId -> ratingRepository.findById(ratingId)
