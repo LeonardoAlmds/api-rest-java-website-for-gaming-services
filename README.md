@@ -1,10 +1,4 @@
-Claro, vou criar um modelo de README para o seu projeto em Java. Se puder, me informe mais detalhes sobre o projeto, como o nome, objetivo, funcionalidades, tecnologias usadas e instruções de uso. Caso não tenha essas informações agora, vou criar um modelo genérico que você pode personalizar depois.
-
-Aqui vai o modelo genérico:  
-
----
-
-# Nome do Projeto
+# K+ Project
 
 **Descrição**  
 Uma breve descrição do projeto, destacando seu propósito e funcionalidades principais. Por exemplo:  
