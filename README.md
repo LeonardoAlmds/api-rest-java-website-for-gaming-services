@@ -1,94 +1,54 @@
-# K+ Project
+# 🎮 K-PLUS API de Venda de Serviços
 
-**Descrição**  
-Uma breve descrição do projeto, destacando seu propósito e funcionalidades principais. Por exemplo:  
-_"Este é um sistema desenvolvido em Java para gerenciar [descrição específica do projeto]."_  
+Este é um projeto de API REST desenvolvida em **Java com Spring Boot**, voltada para um site de venda de **serviços e moedas virtuais em jogos online**, no estilo da plataforma **GGMax**.
 
----
+## ⚙️ Tecnologias Utilizadas
 
-## Funcionalidades
-
-- [x] Funcionalidade 1  
-- [x] Funcionalidade 2  
-- [x] Funcionalidade 3  
-
----
-
-## Tecnologias Utilizadas
-
-- Java (versão [X.X.X])  
-- Maven/Gradle (se utilizado)  
-- [Bibliotecas/Frameworks usados]  
+- **Java 21+**
+- **Spring Boot**
+- **Spring Security**
+- **JWT (JSON Web Token)** para autenticação
+- **Spring Data JPA (Hibernate)**
+- **MySQL** como banco de dados
+- **Swagger (SpringDoc OpenAPI)** para documentação interativa
 
 ---
 
-## Pré-requisitos
+## 🔐 Funcionalidades de Segurança
 
-Certifique-se de ter os seguintes itens instalados em seu ambiente:  
-
-- [Java SE Development Kit (JDK) - versão mínima requerida]  
-- [Ferramenta de build, se necessário, como Maven ou Gradle]  
-
----
-
-## Como Executar o Projeto  
-
-### Clonando o Repositório  
-
-```bash  
-git clone https://github.com/seu-usuario/seu-repositorio.git  
-cd seu-repositorio  
-```  
-
-### Compilando e Executando  
-
-1. Compile o projeto:  
-   ```bash  
-   javac -d bin src/**/*.java  
-   ```  
-2. Execute o programa:  
-   ```bash  
-   java -cp bin pacote.principal.ClassePrincipal  
-   ```  
-
-Ou, caso use Maven/Gradle:  
-
-```bash  
-# Com Maven  
-mvn clean install  
-mvn exec:java -Dexec.mainClass="pacote.principal.ClassePrincipal"  
-
-# Com Gradle  
-./gradlew run  
-```  
+- Autenticação via **JWT**
+- Controle de acesso por **nível de permissão**
+- Proteção de rotas com **Spring Security**
+- Rotas públicas e privadas configuradas
 
 ---
 
-## Estrutura do Projeto  
+## 📦 Funcionalidades da API
 
-```plaintext  
-src/  
- ├── pacote/  
- │   ├── ClassePrincipal.java  
- │   ├── ClasseSecundaria.java  
- └── resources/  
-     └── arquivos-de-configuracao  
-```  
-
----
-
-## Autor  
-
-**Leonardo**  
-- GitHub: [seu-usuario](https://github.com/seu-usuario)  
-- Email: [seu-email@email.com](mailto:seu-email@email.com)  
+- Cadastro e autenticação de usuários
+- Controle de acesso com múltiplos **níveis de usuário** (ex: admin, vendedor, cliente)
+- Cadastro de **produtos** e **subprodutos**
+- Gerenciamento de **categorias**
+- Criação e controle de **ordens de venda**
+- Validação e organização de dados
+- Documentação completa com Swagger
 
 ---
 
-## Licença  
+## 📑 Documentação
 
-Este projeto está licenciado sob a [Licença que você escolher] - veja o arquivo [LICENSE](LICENSE) para mais detalhes.  
+A API é totalmente documentada utilizando o **Swagger UI**.
+
+> Acesse a documentação interativa em:  
+> `http://localhost:8080/swagger-ui.html`  
+> ou  
+> `http://localhost:8080/swagger-ui/index.html`
 
 ---
 
-Se precisar de ajustes ou quiser adicionar informações mais específicas, é só avisar!
+## 🚀 Como executar o projeto
+
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/LeonardoAlmds/api-rest-java-website-for-gaming-services.git
+   cd api-rest-java-website-for-gaming-services
